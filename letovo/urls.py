@@ -9,6 +9,4 @@ urlpatterns += i18n_patterns(
     path("grade5/", include("grade5.urls")),
     path('', include('cms.urls')),   # стартовый URL — корень сайта
     path('assignments/', include('assignments.urls')),
-    
 )
-
