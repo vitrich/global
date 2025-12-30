@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = []
-
+#
 urlpatterns += i18n_patterns(
     path('assignments/', include('assignments.urls')),
     path('admin/', admin.site.urls),
