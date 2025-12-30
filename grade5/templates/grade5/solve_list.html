@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Список задач{% endblock %}
+
+{% block content %}
+<div class="card">
+    {% if user.is_authenticated %}
+        {% with profile=user.pupilprofile %}
+            <div class="tag">Класс: {{ profile.classname }} · {{ profile.last_name }} {{ profile.first_name }}</div>
+        {% endwith %}
+    {% endif %}
+    <h2>✏️ Список задач</h2>
+    
+    {% for item in tasks_with_status %}
+        {% with task=item.task is_solved=item.is_solved %}
+        <div class="card">
+            <h3>Задача {{ task.topic_number }}.{{ task.number }}</h3>
+            <p>{{ task.text|truncatewords:30|linebreaks }}</p>
+            
+            {% if user.is_authenticated %}
+                {% if is_solved %}
+                    <span class="badge badge-success">✅ Решена</span>
+                {% else %}
+                    <span class="badge badge-warning">⏳ Не решена</span>
+                {% endif %}
+                <a href="{% url 'grade5_solve_task' task.id %}" class="btn btn-primary">
+                    {{ is_solved|yesno:"Посмотреть результат,Решить задачу" }}
+                </a>
+            {% else %}
+                <a href="{% url 'grade5_login' %}" class="btn">Войдите, чтобы решать</a>
+            {% endif %}
+        </div>
+        {% endwith %}
+    {% empty %}
+        <div class="card">
+            <p>Задачи отсутствуют в системе.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

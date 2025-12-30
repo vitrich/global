@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Результаты{% endblock %}
+
+{% block content %}
+<div class="card">
+    {% with profile=user.pupilprofile %}
+        <h2>Результаты {{ profile.last_name }} {{ profile.first_name }} ({{ profile.classname }})</h2>
+    {% endwith %}
+    
+    {% for result in results %}
+    <div class="card">
+        <h3>{{ result.task.topic_number }}.{{ result.task.number }}</h3>
+        <p>Ваш ответ: <strong>{{ result.given_answer }}</strong></p>
+        {% if result.is_correct %}
+            <span class="badge badge-success">✅ Верно</span>
+        {% else %}
+            <span class="badge badge-warning">❌ Неверно</span>
+        {% endif %}
+        <small>Дата: {{ result.created_at|date:"d.m.Y H:i" }}</small>
+    </div>
+    {% empty %}
+    <div class="card">
+        <p>Результатов пока нет. <a href="{% url 'grade5_solve' %}" class="btn btn-primary">Решить задачи</a></p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

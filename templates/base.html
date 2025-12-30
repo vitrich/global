@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Летово Джуниор · 5 класс{% endblock %}</title>
+    <style>
+        :root {
+            --bg-dark: #0b1020;
+            --bg-card: #151a30;
+            --accent-red: #7b1e3a;
+            --accent-red-light: #a32a4a;
+            --text-main: #f4f5fb;
+            --text-muted: #a3acc9;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top left, #1f2845, #050814);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+        }
+        header {
+            background: linear-gradient(120deg, #111831, #050814);
+            border-radius: 14px;
+            padding: 12px 20px 14px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 20px;
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .brand {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .brand-title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+        .brand-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .user-info {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+        .user-name { font-weight: 600; color: #fff; }
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            text-decoration: none;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.2s ease;
+        }
+        nav a span.icon {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        nav a:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-1px);
+        }
+        nav a.active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light));
+            border-color: transparent;
+            box-shadow: 0 10px 25px rgba(123, 30, 58, 0.6);
+        }
+        .card {
+            background: linear-gradient(150deg, var(--bg-card), #0b1020);
+            border-radius: 14px;
+            padding: 18px 20px 20px;
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 16px;
+        }
+        h1, h2 { 
+            font-size: 24px; 
+            margin-bottom: 10px; 
+            color: var(--text-main);
+        }
+        .card p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(123, 30, 58, 0.18);
+            color: #ffdce5;
+            border: 1px solid rgba(255, 138, 171, 0.4);
+            margin-bottom: 10px;
+        }
+        .badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 500;
+        }
+        .badge-success { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .badge-warning { background: rgba(251, 191, 36, 0.2); color: #f59e0b; border: 1px solid rgba(251, 191, 36, 0.3); }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            transition: all 0.2s ease;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            color: var(--text-main);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-red-light));
+            border-color: transparent;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 8px 20px rgba(123, 30, 58, 0.4);
+            transform: translateY(-1px);
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(123, 30, 58, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(123, 30, 58, 0.15);
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        .alert {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .alert-success { background: rgba(34, 197, 94, 0.15); color: #22c55e; border-color: rgba(34, 197, 94, 0.3); }
+        .alert-info { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border-color: rgba(59, 130, 246, 0.3); }
+        @media (max-width: 768px) {
+            .page-wrapper { padding: 16px 12px 32px; }
+            nav ul { flex-direction: column; }
+            nav a { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+    <header>
+        <div class="header-top">
+            <div class="brand">
+                <div class="brand-title">Летово Джуниор · 5 класс</div>
+                <div class="brand-subtitle">математика · задания и результаты</div>
+            </div>
+            <div class="user-info">
+    {% if user.is_authenticated %}
+        {% with profile=user.pupilprofile %}
+            Здравствуй <span class="user-name">{{ profile.last_name }} {{ profile.first_name }} ({{ profile.classname }})</span>
+        {% endwith %}
+    {% else %}
+        <span class="user-name">Гость</span>
+    {% endif %}
+</div>
+
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'grade5_home' %}" class="{% if request.resolver_match.url_name == 'grade5_home' %}active{% endif %}">
+                    <span class="icon">🏠</span>Главная</a></li>
+                {% if not user.is_authenticated %}
+                <li><a href="{% url 'grade5_register' %}" class="{% if request.resolver_match.url_name == 'grade5_register' %}active{% endif %}">
+                    <span class="icon">📝</span>Регистрация</a></li>
+                <li><a href="{% url 'grade5_login' %}" class="{% if request.resolver_match.url_name == 'grade5_login' %}active{% endif %}">
+                    <span class="icon">🔑</span>Вход</a></li>
+                {% endif %}
+                <li><a href="{% url 'grade5_solve' %}" class="{% if request.resolver_match.url_name == 'grade5_solve' %}active{% endif %}">
+                    <span class="icon">✏️</span>Решить задачу</a></li>
+                <li><a href="{% url 'grade5_results' %}" class="{% if request.resolver_match.url_name == 'grade5_results' %}active{% endif %}">
+                    <span class="icon">📊</span>Результаты</a></li>
+                <li><a href="{% url 'grade5_news' %}" class="{% if request.resolver_match.url_name == 'grade5_news' %}active{% endif %}">
+                    <span class="icon">📰</span>Новости</a></li>
+                <li><a href="{% url 'grade5_class_stats' %}" class="{% if request.resolver_match.url_name == 'grade5_class_stats' %}active{% endif %}">
+    <span class="icon">📊</span>Статистика</a></li>
+
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'grade5_logout' %}" class="{% if request.resolver_match.url_name == 'grade5_logout' %}active{% endif %}">
+                    <span class="icon">🚪</span>Выход</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<script>
+    document.querySelectorAll('nav a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>

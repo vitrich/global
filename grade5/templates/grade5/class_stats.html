@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика по классам{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📊 Статистика 5 класса</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+        
+        <!-- Количество учеников по классам -->
+        <div class="card">
+            <h3>👥 Ученики по классам</h3>
+            {% for stat in class_stats %}
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <span>{{ stat.classname }}</span>
+                <strong class="badge badge-success">{{ stat.pupils_count }}</strong>
+            </div>
+            {% empty %}
+            <p>Учеников пока нет</p>
+            {% endfor %}
+        </div>
+        
+        <!-- Решения по классам -->
+        <div class="card">
+            <h3>✅ Решения по классам</h3>
+            {% for sol in class_solutions %}
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <span>{{ sol.user__pupilprofile__classname }}</span>
+                <strong class="badge badge-primary">
+                    {{ sol.solutions_count }} ({{ sol.correct_count }} ✅)
+                </strong>
+            </div>
+            {% empty %}
+            <p>Решений пока нет</p>
+            {% endfor %}
+        </div>
+        
+    </div>
+    
+    <!-- Лидерборд классов -->
+    <div class="card">
+        <h3>🏆 Рейтинг классов</h3>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; min-width: 400px;">
+                <thead>
+                    <tr style="background: rgba(255,255,255,0.05);">
+                        <th style="padding: 16px 12px; text-align: left; border-bottom: 2px solid rgba(255,255,255,0.1);">Класс</th>
+                        <th style="padding: 16px 12px; text-align: right; border-bottom: 2px solid rgba(255,255,255,0.1);">Решено задач</th>
+                        <th style="padding: 16px 12px; text-align: right; border-bottom: 2px solid rgba(255,255,255,0.1);">Верно</th>
+                        <th style="padding: 16px 12px; text-align: right; border-bottom: 2px solid rgba(255,255,255,0.1);">Точность</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sol in class_solutions %}
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <td style="padding: 16px 12px; font-weight: 500;">
+                            {{ sol.user__pupilprofile__classname }}
+                        </td>
+                        <td style="padding: 16px 12px; text-align: right; color: var(--text-muted);">
+                            {{ sol.solutions_count }}
+                        </td>
+                        <td style="padding: 16px 12px; text-align: right;">
+                            <span class="badge badge-success">{{ sol.correct_count }}</span>
+                        </td>
+                        <td style="padding: 16px 12px; text-align: right;">
+                            {% widthratio sol.correct_count sol.solutions_count 100 %}%
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="padding: 32px; text-align: center; color: var(--text-muted);">
+                            Статистика появится после первых решений
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

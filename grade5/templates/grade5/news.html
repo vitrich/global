@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>📰 Новости 5 класса</h2>
+    
+    {% if user.is_authenticated %}
+        <a href="{% url 'grade5_news_add' %}" class="btn btn-primary">Добавить новость</a>
+    {% endif %}
+    
+    {% for news in news_list %}
+    <div class="card">
+        <div class="tag">Новость #{{ forloop.counter }}</div>
+        <h3>{{ news.title }}</h3>
+        <p>{{ news.content|linebreaks }}</p>
+        <div style="font-size: 13px; color: var(--text-muted);">
+            {{ news.created_at|date:"d.m.Y H:i" }}
+            {% if news.author %}
+                · {{ news.author.pupilprofile.last_name }} {{ news.author.pupilprofile.first_name }}
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p>Новостей пока нет.</p>
+    {% endfor %}
+</div>
+{% endblock %}

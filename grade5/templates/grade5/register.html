@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Регистрация</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">{{ form.username.label }}</label>
+            {{ form.username }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">{{ form.first_name.label }}</label>
+            {{ form.first_name }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">{{ form.last_name.label }}</label>
+            {{ form.last_name }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">{{ form.classname.label }}</label>
+            {{ form.classname }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+        </div>
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        <a href="{% url 'grade5_login' %}" class="btn">У меня есть аккаунт</a>
+    </form>
+</div>
+{% endblock %}

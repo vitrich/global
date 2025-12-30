@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тренажёр: нахождение НОД</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .task {
+            font-size: 18px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+            color: #555;
+        }
+        .stats {
+            margin-top: 15px;
+            text-align: center;
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Тренажёр: нахождение НОД</h1>
+        <div class="task">
+            Найдите НОД чисел: <span id="num1">12</span> и <span id="num2">18</span>
+        </div>
+        <div class="input-group">
+            <input type="number" id="userAnswer" placeholder="Ваш ответ">
+            <button onclick="checkAnswer()">Проверить</button>
+        </div>
+        <div id="result" class="result"></div>
+        <div id="stats" class="stats">
+            Правильно: <span id="correct">0</span>, 
+            Всего: <span id="total">0</span>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="generateNewTask()">Новое задание</button>
+        </div>
+    </div>
+
+    <script>
+        let correctCount = 0;
+        let totalCount = 0;
+
+        // Генерация новых чисел (от 2 до 50)
+        function generateNewTask() {
+            const num1 = Math.floor(Math.random() * 49) + 2; // 2–50
+            const num2 = Math.floor(Math.random() * 49) + 2; // 2–50
+            document.getElementById('num1').textContent = num1;
+            document.getElementById('num2').textContent = num2;
+            document.getElementById('userAnswer').value = '';
+            document.getElementById('result').textContent = '';
+        }
+
+        // Алгоритм Евклида для нахождения НОД
+        function findGCD(a, b) {
+            while (b !== 0) {
+                let temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+
+        // Проверка ответа пользователя
+        function checkAnswer() {
+            const num1 = parseInt(document.getElementById('num1').textContent);
+            const num2 = parseInt(document.getElementById('num2').textContent);
+            const userAnswer = parseInt(document.getElementById('userAnswer').value);
+            const correctAnswer = findGCD(num1, num2);
+
+            if (isNaN(userAnswer)) {
+                document.getElementById('result').textContent = 'Введите число!';
+                return;
+            }
+
+            totalCount++;
+            if (userAnswer === correctAnswer) {
+                correctCount++;
+                document.getElementById('result').textContent = 'Правильно! ✓';
+            } else {
+                document.getElementById('result').textContent = 
+                    `Неверно. Правильный ответ: ${correctAnswer}.`;
+            }
+
+            // Обновление статистики
+            document.getElementById('correct').textContent = correctCount;
+            document.getElementById('total').textContent = totalCount;
+        }
+
+        // Генерируем первое задание при загрузке
+        window.onload = generateNewTask;
+    </script>
+</body>
+</html>
