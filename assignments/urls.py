@@ -1,4 +1,4 @@
-# urls.py - URL-маршруты для системы проверки знаний
+# assignments/urls.py - URL-маршруты для системы проверки знаний
 from django.urls import path
 from . import views
 
