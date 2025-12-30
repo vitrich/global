@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'djangocms_style',
     'djangocms_versioning',
     "grade5",
+    'assignments',
 ]
 SITE_ID = 1
 

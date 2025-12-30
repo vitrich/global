@@ -1,0 +1,81 @@
+{# templates/student/solve_assignment.html #}
+{% extends 'base.html' %}
+
+{% block title %}Решение: {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="mb-2">{{ assignment.topic.name }}</h1>
+                <p class="text-muted mb-4">{{ assignment.title }}</p>
+                
+                <div class="card mb-5">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Ваш вариант: #{{ variant.variant_number }}</h5>
+                        
+                        <form method="POST" action="">
+                            {% csrf_token %}
+                            
+                            {% for question in questions %}
+                            <div class="mb-5 p-4" style="border-left: 4px solid #007bff; background-color: #f8f9fa;">
+                                <h6 class="mb-3">
+                                    <strong>Задание {{ forloop.counter }}</strong>
+                                </h6>
+                                <p class="mb-4">{{ question.text }}</p>
+                                
+                                <div class="form-group">
+                                    <label for="answer_{{ forloop.counter }}" class="form-label">Ваш ответ:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control form-control-lg"
+                                        id="answer_{{ forloop.counter }}"
+                                        name="answer_{{ forloop.counter }}"
+                                        placeholder="Введите ответ"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    ✓ Отправить ответы
+                                </button>
+                                <a href="{% url 'student_dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                                    ← Назад
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 20px;">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">ℹ️ Информация</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">
+                            <strong>Класс:</strong> {{ assignment.school_class }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Тема:</strong> {{ assignment.topic.name }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Вопросов:</strong> {{ questions|length }}
+                        </p>
+                        {% if assignment.deadline %}
+                        <p class="mb-0">
+                            <strong>Срок:</strong> {{ assignment.deadline|date:'d.m.Y' }}
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

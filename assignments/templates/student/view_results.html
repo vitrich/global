@@ -1,0 +1,127 @@
+{# templates/student/view_results.html #}
+{% extends 'base.html' %}
+
+{% block title %}Результаты: {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="mb-2">Результаты проверочной работы</h1>
+                <p class="text-muted mb-4">{{ assignment.title }}</p>
+                
+                <!-- Итоги -->
+                <div class="card mb-5" style="border-top: 4px solid {% if percent == 100 %}#28a745{% elif percent >= 70 %}#ffc107{% else %}#dc3545{% endif %};">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <h6 class="text-muted">Всего вопросов</h6>
+                                <h2>{{ total }}</h2>
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <h6 class="text-muted">Правильные ответы</h6>
+                                <h2 class="text-success">{{ correct }}<span class="text-muted" style="font-size: 0.6em;"> / {{ total }}</span></h2>
+                            </div>
+                            <div class="col-md-4">
+                                <h6 class="text-muted">Процент</h6>
+                                <h2 style="color: {% if percent == 100 %}#28a745{% elif percent >= 70 %}#ffc107{% else %}#dc3545{% endif %};">
+                                    {{ percent|floatformat:1 }}%
+                                </h2>
+                            </div>
+                        </div>
+                        
+                        {% if checked < total %}
+                        <div class="alert alert-warning mt-4 mb-0">
+                            <strong>⚠️ Внимание:</strong> {{ total|add:"-"|add:checked }} ответов еще не проверены учителем.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Детальный разбор -->
+                <h3 class="mb-4">Разбор ответов</h3>
+                
+                {% for result in result_data %}
+                <div class="card mb-4 {% if result.is_correct %}border-success{% elif result.is_correct == False %}border-danger{% else %}border-warning{% endif %}" style="border-left: 5px solid {% if result.is_correct %}#28a745{% elif result.is_correct == False %}#dc3545{% else %}#ffc107{% endif %};">
+                    <div class="card-body">
+                        <h6 class="mb-3">
+                            <strong>Задание {{ result.question_num }}</strong>
+                            {% if result.is_correct %}
+                                <span class="badge bg-success">✓ Верно</span>
+                            {% elif result.is_correct == False %}
+                                <span class="badge bg-danger">✗ Неверно</span>
+                            {% else %}
+                                <span class="badge bg-warning">⏳ Не проверено</span>
+                            {% endif %}
+                        </h6>
+                        
+                        <p class="mb-3">
+                            <strong>Вопрос:</strong> {{ result.question.text }}
+                        </p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="mb-2">
+                                    <strong>Ваш ответ:</strong><br>
+                                    <code style="background-color: #f8f9fa; padding: 8px; display: inline-block;">
+                                        {{ result.student_answer|default:"(нет ответа)" }}
+                                    </code>
+                                </p>
+                            </div>
+                            {% if result.is_correct != None %}
+                            <div class="col-md-6">
+                                <p class="mb-2">
+                                    <strong>Правильный ответ:</strong><br>
+                                    <code style="background-color: #e8f5e9; padding: 8px; display: inline-block; color: #28a745;">
+                                        {{ result.correct_answer }}
+                                    </code>
+                                </p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <div class="d-flex gap-2 mt-5">
+                    {% if percent < 100 and checked == total %}
+                    <a href="{% url 'solve_assignment' variant.id %}" class="btn btn-primary btn-lg">
+                        ✏️ Переделать
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'student_dashboard' %}" class="btn btn-outline-secondary btn-lg">
+                        ← К работам
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 20px;">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">ℹ️ Справка</h6>
+                    </div>
+                    <div class="card-body small">
+                        <p class="mb-2">
+                            <strong>Класс:</strong><br>
+                            {{ assignment.school_class }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Тема:</strong><br>
+                            {{ assignment.topic.name }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Вариант:</strong><br>
+                            #{{ variant.variant_number }}
+                        </p>
+                        <p class="mb-0">
+                            <strong>Отправлено:</strong><br>
+                            {{ variant.created_at|date:'d.m.Y H:i' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{# templates/teacher/dashboard.html #}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Панель управления учителя{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="py-5">
+        <h1 class="mb-4">Добро пожаловать, {{ user.get_full_name }}</h1>
+        
+        <div class="row">
+            {% for class in classes %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">{{ class.grade }} класс {{ class.name }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Учеников: <strong>{{ class.students.count }}</strong></p>
+                        <p class="text-muted">Активных работ: <strong>{{ class.assignments.filter|status:'active'|length }}</strong></p>
+                    </div>
+                    <div class="card-footer bg-light">
+                        <a href="{% url 'create_assignment' class.id %}" class="btn btn-sm btn-primary">
+                            ➕ Создать работу
+                        </a>
+                        <a href="{% url 'class_statistics' class.id %}" class="btn btn-sm btn-info">
+                            📊 Статистика
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <hr class="my-5">
+        
+        <h2 class="mb-4">Последние проверочные работы</h2>
+        
+        {% if assignments %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Класс</th>
+                        <th>Тема</th>
+                        <th>Название</th>
+                        <th>Статус</th>
+                        <th>Создана</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td><strong>{{ assignment.school_class }}</strong></td>
+                        <td>{{ assignment.topic.name }}</td>
+                        <td>{{ assignment.title }}</td>
+                        <td>
+                            {% if assignment.status == 'draft' %}
+                                <span class="badge bg-secondary">Черновик</span>
+                            {% elif assignment.status == 'active' %}
+                                <span class="badge bg-success">Активна</span>
+                            {% else %}
+                                <span class="badge bg-danger">Завершена</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ assignment.created_at|date:'d.m.Y H:i' }}</td>
+                        <td>
+                            <a href="{% url 'assignment_detail' assignment.id %}" class="btn btn-xs btn-outline-primary">
+                                Просмотр
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="alert alert-info">Вы еще не создали ни одной проверочной работы.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
