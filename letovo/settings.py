@@ -35,9 +35,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Перенаправление на страницу логина
-LOGIN_URL = '/ru/grade5/login/'
-LOGIN_REDIRECT_URL = '/ru/grade5/home/'
-LOGOUT_REDIRECT_URL = '/ru/grade5/home/'
+LOGIN_URL = '/ru/grade5/login/'  # можно оставить как есть, если логин там
+LOGIN_REDIRECT_URL = '/ru/assignments/student/dashboard/'
+LOGOUT_REDIRECT_URL = '/ru/assignments/student/dashboard/'
+
 
 
 
