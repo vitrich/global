@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Кабинет учителя</h1>
+{% for cls in classes %}
+<div class="card">
+    <h2>Класс {{ cls }}</h2>
+    <ul>
+    {% for student in cls.students.all %}
+        <li>{{ student.user.username }} ({{ student.user.get_full_name }})</li>
+    {% empty %}
+        <li>Нет учеников</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% endblock %}

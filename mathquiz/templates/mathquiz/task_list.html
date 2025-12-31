@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Задания</h1>
+<div style="margin-bottom: 20px;">
+    {% for topic in topics %}<a href="?topic={{ topic.id }}" class="btn" style="background: #e5e7eb; color: black; margin-right: 10px;">{{ topic.title }}</a>{% endfor %}
+    <a href="?" class="btn" style="background: #e5e7eb; color: black;">Все</a>
+</div>
+{% for task in tasks %}
+<div class="card">
+    <h3>Задание #{{ task.id }} <small style="color: grey">({{ task.score }} баллов)</small></h3>
+    <p>{{ task.text }}</p>
+    <p><small>Тема: {{ task.topic.title }} | Решено верно раз: <b>{{ task.correct_count }}</b></small></p>
+    <a href="{% url 'mathquiz:task_detail' task.id %}" class="btn">Решить</a>
+</div>
+{% endfor %}
+{% endblock %}

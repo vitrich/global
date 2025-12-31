@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}MathQuiz{% endblock %}</title>
+<style>
+body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+.navbar { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 20px; }
+.card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+a { text-decoration: none; color: #3b82f6; }
+.btn { padding: 8px 16px; background: #3b82f6; color: white; border-radius: 4px; border: none; cursor: pointer; }
+.correct { color: green; } .incorrect { color: red; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+    <a href="{% url 'mathquiz:task_list' %}"><b>MathQuiz</b></a>
+    {% if user.student_profile %}<a href="{% url 'mathquiz:student_dashboard' %}">Мой прогресс</a>{% endif %}
+    {% if user.classes_as_teacher.exists %}<a href="{% url 'mathquiz:teacher_dashboard' %}">Учительская</a>{% endif %}
+    <span>{{ user.username }}</span>
+</nav>
+<div class="container">{% block content %}{% endblock %}</div>
+</body>
+</html>

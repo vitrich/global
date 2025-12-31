@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h1>Задание #{{ task.id }}</h1>
+    <p style="font-size: 1.2em;">{{ task.text }}</p>
+    <div id="result"></div>
+    <form id="ansForm" style="margin-top: 20px;">
+        {% csrf_token %}
+        <input type="text" name="answer" placeholder="Ваш ответ" style="padding: 10px; width: 300px;" required>
+        <button type="submit" class="btn">Проверить</button>
+    </form>
+</div>
+<script>
+document.getElementById('ansForm').onsubmit = async (e) => {
+    e.preventDefault();
+    let fd = new FormData(e.target);
+    let res = await fetch("{% url 'mathquiz:submit_answer' task.id %}", {method:'POST', body:fd});
+    let data = await res.json();
+    let color = data.is_correct ? 'green' : 'red';
+    let msg = data.is_correct ? 'Верно! +' + data.score_received : 'Неверно. Правильно: ' + data.correct_answer;
+    document.getElementById('result').innerHTML = `<h2 style="color:${color}">${msg}</h2>`;
+    if(data.is_correct) setTimeout(() => location.reload(), 2000);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Мой прогресс</h1>
+<div class="card">
+    <h2>Всего баллов: {{ total_score }}</h2>
+</div>
+<h3>История решений</h3>
+{% for ans in recent_answers %}
+<div class="card" style="border-left: 5px solid {% if ans.is_correct %}green{% else %}red{% endif %}">
+    <p><b>{{ ans.task.text }}</b></p>
+    <p>Ваш ответ: {{ ans.given_answer }} | {% if ans.is_correct %}✅ +{{ ans.score_received }}{% else %}❌{% endif %}</p>
+    <small>{{ ans.attempted_at }}</small>
+</div>
+{% endfor %}
+{% endblock %}
