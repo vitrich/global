@@ -1,0 +1,29 @@
+создать новое джанго приложение для проверки знаний по математике должны быть пользователи которые могут быть учениками и учителями должны быть классы класс может быть 4 или 5 и у каждого класса есть свой преподаватель . есть задания с текстом и правильным ответом, баллом за ответ, темой и счетчиком правильных ответов
+
+Ваш Django проект:
+│
+└── myproject/
+    ├── manage.py
+    ├── myproject/
+    │   ├── settings.py  (добавьте 'mathquiz')
+    │   └── urls.py      (добавьте include('mathquiz.urls'))
+    │
+    └── mathquiz/        ← КОПИРУЙТЕ СЮДА
+        ├── models.py            ← из mathquiz_models.py
+        ├── admin.py             ← из mathquiz_admin.py
+        ├── views.py             ← из mathquiz_views.py
+        ├── urls.py              ← из mathquiz_urls.py
+        ├── forms.py             ← из mathquiz_forms.py
+        ├── utils.py             ← из mathquiz_utils.py
+        │
+        ├── templates/
+        │   ├── base.html        ← из templates_base.html
+        │   └── mathquiz/
+        │       ├── task_list.html
+        │       ├── task_detail.html
+        │       ├── student_dashboard.html
+        │       └── teacher_dashboard.html
+        │
+        └── management/
+            └── commands/
+                └── populate_db.py  ← из populate_db_example.py
