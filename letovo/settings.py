@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'djangocms_versioning',
     "grade5",
     'assignments',
+    'mathquiz',
 ]
 SITE_ID = 1
 
